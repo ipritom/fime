@@ -71,7 +71,6 @@ class App(FletApp):
     def _contrast_change(self, e):
         alpha = self.contast_alpha.value
         beta = self.contast_beta.value
-        print(alpha, beta)
         self.initial_view.image.discard()
 
         self.initial_view.image = imageview.image_conrast(self.initial_view.image, alpha, beta)
@@ -123,17 +122,17 @@ class App(FletApp):
         self.page.update()
 
     def _pick_files_result(self, e):
-        print(e.files[0].path)
+        # print(e.files[0].path)
         self.initial_view.image = imageview.ImageContext(e.files[0].path, preload=True,height=500, width=450)
         self.edit_view.flet_image = ft.Image(src_base64=self.initial_view.image.get_base64())
         self.edit_view.render()
 
-
+    # run() method can be overloaded
     # def run(self):
     #     ft.app(target=self.main,view=ft.WEB_BROWSER)
 
         
 
-app = App(title="Fl")
+app = App(title="FIME")
 app.run()
         
