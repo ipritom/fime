@@ -3,6 +3,8 @@ import flet as ft
 
 from views.initial_view import InitialView
 from views.edit_view import EditView, EditOption
+# from views.appbarview import AppBarView
+
 
 import imageview
 
@@ -13,6 +15,7 @@ class App(FletApp):
     def views(self, page:ft.Page):
         self.initial_view = InitialView(self.page)
         self.edit_view = EditView(self.page)
+        
 
     def app_presentaion(self):
 
@@ -24,6 +27,10 @@ class App(FletApp):
         #
         self.edit_view.edit_option.on_change = self._on_select_edit_option
         self.edit_view.reset_button.on_click = self._image_reload
+        self.edit_view.save_btn.on_click = lambda _: pick_files_dialog.save_file(
+            dialog_title="Save Location",
+            file_type=ft.FilePickerFileType.IMAGE,
+            allowed_extensions=True)
 
     def _image_reload(self, e):
         self.initial_view.image.reload()
@@ -126,6 +133,10 @@ class App(FletApp):
         self.initial_view.image = imageview.ImageContext(e.files[0].path, preload=True,height=500, width=450)
         self.edit_view.flet_image = ft.Image(src_base64=self.initial_view.image.get_base64())
         self.edit_view.render()
+
+    def _save_image(self, e):
+        # self.
+        pass
 
     # run() method can be overloaded
     # def run(self):

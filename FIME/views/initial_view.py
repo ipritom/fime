@@ -2,7 +2,7 @@ import flet as ft
 from fletSDP.views import FletView
 
 import imageview
-# from controller import ImageFilePicker
+
 
 class InitialView(FletView):
     def __init__(self, page: ft.Page) -> None:

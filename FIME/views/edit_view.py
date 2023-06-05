@@ -3,6 +3,8 @@ from fletSDP.views import FletView
 
 from dataclasses import dataclass
 
+# from appbarview import AppBarView
+
 @dataclass
 class EditOption:
     BLUR = "Blur"
@@ -16,6 +18,13 @@ class EditView(FletView):
 
     
     def controls(self):
+        self.save_btn = ft.IconButton(ft.icons.SAVE_ALT_OUTLINED)
+        self.app_bar = ft.AppBar(
+            title=ft.Text("Toolbar"),
+            actions=[
+                self.save_btn
+            ]
+            )
         self.flet_image: ft.Image = None
         self.image_container = ft.Container()
         self.edit_option = ft.Dropdown(label="Edit Option",
@@ -38,8 +47,9 @@ class EditView(FletView):
         
 
     def layout(self):
-        # self.page.clean()
+        self.page.appbar = self.app_bar
         self.image_container.content = self.flet_image
+        
         self.page.add(
             ft.Row([self.image_container, 
                     ft.Container(self.edit_panel, 
