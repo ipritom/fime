@@ -4,6 +4,8 @@ import numpy as np
 # from typing import Any
 import cv2
 
+import os
+import secrets
 import base64
 
 
@@ -160,6 +162,14 @@ def draw_dot(image:ImageContext, x, y, point_size=5):
 def image_conrast(image:ImageContext, alpha, beta):
     image.image_array = cv2.convertScaleAbs(image(),None, alpha, beta)
     return image
+
+
+def image_save(image:ImageContext, name:str=None, path=None):
+    if name==None:
+        name = secrets.token_hex(10)
+
+    actual_path = os.path.join(path, f'{name}.jpg')
+    cv2.imwrite(actual_path, image())
 
 if __name__ == "__main__":
     image = ImageContext("cosmetics.jpg")
