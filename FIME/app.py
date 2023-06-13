@@ -21,16 +21,18 @@ class App(FletApp):
 
         #########################
         self.initial_view.render()
+        # namespace for save and pick file dialog
         pick_files_dialog = self.initial_view.pick_files_dialog
+        save_files_dialog = self.edit_view.save_files_dialog
+        # add interaction logic function for initial page
         pick_files_dialog.on_result = self._pick_files_result
         self.initial_view.image_file_picker_btn.on_click = lambda _: pick_files_dialog.pick_files(allow_multiple=False)
-        #
+        # add interaction logic function for edit page
+        save_files_dialog.on_result = self._save_image
         self.edit_view.edit_option.on_change = self._on_select_edit_option
         self.edit_view.reset_button.on_click = self._image_reload
-        self.edit_view.save_btn.on_click = lambda _: pick_files_dialog.save_file(
-            dialog_title="Save Location",
-            file_type=ft.FilePickerFileType.IMAGE,
-            allowed_extensions=True)
+        self.edit_view.save_btn.on_click = lambda _: save_files_dialog.get_directory_path(dialog_title="Save Location")
+
 
     def _image_reload(self, e):
         self.initial_view.image.reload()
@@ -129,14 +131,14 @@ class App(FletApp):
         self.page.update()
 
     def _pick_files_result(self, e):
-        # print(e.files[0].path)
         self.initial_view.image = imageview.ImageContext(e.files[0].path, preload=True,height=500, width=450)
         self.edit_view.flet_image = ft.Image(src_base64=self.initial_view.image.get_base64())
         self.edit_view.render()
 
-    def _save_image(self, e):
-        # self.
-        pass
+    def _save_image(self, e:ft.FilePickerResultEvent):
+        imageview.image_save(self.initial_view.image,
+                             name = self.edit_view.image_name_textbox.value,
+                             path=e.path)
 
     # run() method can be overloaded
     # def run(self):

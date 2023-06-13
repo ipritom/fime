@@ -165,7 +165,7 @@ def image_conrast(image:ImageContext, alpha, beta):
 
 
 def image_save(image:ImageContext, name:str=None, path=None):
-    if name==None:
+    if name==None or name=="":
         name = secrets.token_hex(10)
 
     actual_path = os.path.join(path, f'{name}.jpg')

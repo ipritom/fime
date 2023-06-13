@@ -19,9 +19,12 @@ class EditView(FletView):
     
     def controls(self):
         self.save_btn = ft.IconButton(ft.icons.SAVE_ALT_OUTLINED)
+        self.save_files_dialog = ft.FilePicker()
+        self.image_name_textbox = ft.TextField(label="Image Name", value="")
         self.app_bar = ft.AppBar(
             title=ft.Text("Toolbar"),
             actions=[
+                self.image_name_textbox,
                 self.save_btn
             ]
             )
@@ -49,6 +52,7 @@ class EditView(FletView):
     def layout(self):
         self.page.appbar = self.app_bar
         self.image_container.content = self.flet_image
+        self.page.overlay.append(self.save_files_dialog)
         
         self.page.add(
             ft.Row([self.image_container, 
