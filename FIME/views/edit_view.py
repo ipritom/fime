@@ -39,7 +39,8 @@ class EditView(FletView):
                                        ft.dropdown.Option(EditOption.BW)],
                                       )
         self.reset_button = ft.IconButton(icon=ft.icons.REFRESH_OUTLINED, tooltip="Reload Image")
-        self.edit_panel = ft.Column([ft.Row([self.edit_option, self.reset_button])])
+        self.undo_button  = ft.IconButton(icon=ft.icons.UNDO_OUTLINED, tooltip="Undo")
+        self.edit_panel = ft.Column([ft.Row([self.edit_option, self.reset_button, self.undo_button])])
         
 
         self.image_container =ft.Container(self.image_container, 
