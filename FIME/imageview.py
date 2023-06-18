@@ -1,7 +1,10 @@
+"""
+Python Module for Writing Image Editing Software
+Author: Pritom Mojumder
+Email: pritom.blue2@gmail.com
+"""
 import flet as ft
 import numpy as np
-# from numpy.typing import NDArray,ArrayLike
-# from typing import Any
 import cv2
 
 import os
@@ -26,16 +29,22 @@ class ImageContext:
                  path:str,
                  height:int=500,
                  width:int=500,
+                 keep_track:bool=True,
                  preload:bool=False) -> None:
         
         self.path = path
         self.height = height
         self.width = width
+        self.keep_track = keep_track
         self.preload = preload
+        
         self.image_array : np.ndarray = None
        
         self.__loaded:bool = False
         self.__image_array_state : np.ndarray = None
+        self.__image_history : list = []
+        self.__track_pointer = -1
+    
 
         if self.preload:
             self._from_path()
@@ -89,9 +98,34 @@ class ImageContext:
         print("--- Image State Saved")
         if not self.__loaded:
             self._from_path()
-
+        
+        if self.keep_track:
+            self.__keep_track(self.image_array)
+        
         self.__image_array_state = self.image_array.copy()
 
+
+    def __keep_track(self, image_array:np.ndarray ):
+        self.__image_history.append(image_array.copy())
+        self.__track_pointer += 1 
+    
+    def undo(self):
+        if self.__track_pointer>=0:
+            self.__track_pointer = self.__track_pointer-1 if self.__track_pointer>0 else 0
+            self.image_array = self.__image_history[self.__track_pointer]
+
+    def redo(self):
+        pass
+
+    # def get_from_history(self, idx):
+    #     if idx<=len(self.history_length)-1:
+    #         return self.imag
+    #     if self.__loaded:
+    #         return self.image_array
+    #     else:
+    #         self._from_path()
+    #         return self.image_array
+        
     def _from_path(self):
         image = cv2.imread(self.path)
         self._update_state(image)
@@ -116,6 +150,10 @@ class ImageContext:
             self.image_array = image
 
     @property
+    def history_length(self):
+        return len(self.__image_history)
+    
+    @property
     def shape(self):
         if not self.__loaded:
             self._from_path()
@@ -131,6 +169,7 @@ class ImageContext:
             return self.image_array.shape[2]
         else:
             return 1
+
     
         
 ## image editing functions here 

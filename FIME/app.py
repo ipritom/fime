@@ -3,8 +3,6 @@ import flet as ft
 
 from views.initial_view import InitialView
 from views.edit_view import EditView, EditOption
-# from views.appbarview import AppBarView
-
 
 import imageview
 
@@ -15,7 +13,6 @@ class App(FletApp):
     def views(self, page:ft.Page):
         self.initial_view = InitialView(self.page)
         self.edit_view = EditView(self.page)
-        
 
     def app_presentaion(self):
 
@@ -30,10 +27,17 @@ class App(FletApp):
         # add interaction logic function for edit page
         save_files_dialog.on_result = self._save_image
         self.edit_view.edit_option.on_change = self._on_select_edit_option
-        self.edit_view.reset_button.on_click = self._image_reload
         self.edit_view.save_btn.on_click = lambda _: save_files_dialog.get_directory_path(dialog_title="Save Location")
+        self.edit_view.reset_button.on_click = self._image_reload
+        self.edit_view.undo_button.on_click = self._image_undo
 
 
+    def _image_undo(self, e):
+        self.initial_view.image.undo()
+        self.edit_view.flet_image.src_base64 = self.initial_view.image.get_base64()
+        self.edit_view.flet_image.update()
+        self.page.update()
+        
     def _image_reload(self, e):
         self.initial_view.image.reload()
         self.edit_view.flet_image.src_base64 = self.initial_view.image.get_base64()
