@@ -1,4 +1,5 @@
 # FIME - Flet Image Editor
+This is a very naive image manipulation software program. 
 # How to use 
 Clone the repository.
 ```
