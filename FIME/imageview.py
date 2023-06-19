@@ -44,6 +44,7 @@ class ImageContext:
         self.__image_array_state : np.ndarray = None
         self.__image_history : list = []
         self.__track_pointer = -1
+        self.__FLAG_UNDO:bool = False
     
 
         if self.preload:
@@ -106,16 +107,28 @@ class ImageContext:
 
 
     def __keep_track(self, image_array:np.ndarray ):
+        if self.__FLAG_UNDO:
+            self.__image_history = self.__image_history[0:self.__track_pointer+1]
+            self.__FLAG_UNDO = False
+
         self.__image_history.append(image_array.copy())
         self.__track_pointer += 1 
     
     def undo(self):
+        # [h0, h1, h3]
+        # __track_pointer = 2
+        print(self.__track_pointer, self.history_length)
         if self.__track_pointer>=0:
+            self.__FLAG_UNDO = True
             self.__track_pointer = self.__track_pointer-1 if self.__track_pointer>0 else 0
             self.image_array = self.__image_history[self.__track_pointer]
 
     def redo(self):
-        pass
+        print(self.__track_pointer, self.history_length)
+        if self.__track_pointer<self.history_length:
+            self.__FLAG_UNDO = True
+            self.__track_pointer = self.__track_pointer if self.__track_pointer==self.history_length-1 else self.__track_pointer+1
+            self.image_array = self.__image_history[self.__track_pointer]
 
     # def get_from_history(self, idx):
     #     if idx<=len(self.history_length)-1:

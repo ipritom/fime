@@ -30,7 +30,13 @@ class App(FletApp):
         self.edit_view.save_btn.on_click = lambda _: save_files_dialog.get_directory_path(dialog_title="Save Location")
         self.edit_view.reset_button.on_click = self._image_reload
         self.edit_view.undo_button.on_click = self._image_undo
+        self.edit_view.redo_button.on_click = self._image_redo
 
+    def _image_redo(self, e):
+        self.initial_view.image.redo()
+        self.edit_view.flet_image.src_base64 = self.initial_view.image.get_base64()
+        self.edit_view.flet_image.update()
+        self.page.update()
 
     def _image_undo(self, e):
         self.initial_view.image.undo()

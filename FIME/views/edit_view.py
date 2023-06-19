@@ -18,7 +18,7 @@ class EditView(FletView):
 
     
     def controls(self):
-        self.save_btn = ft.IconButton(ft.icons.SAVE_ALT_OUTLINED)
+        self.save_btn = ft.IconButton(ft.icons.SAVE_ALT_OUTLINED, tooltip="Save Image")
         self.save_files_dialog = ft.FilePicker()
         self.image_name_textbox = ft.TextField(label="Image Name", value="")
         self.app_bar = ft.AppBar(
@@ -40,7 +40,8 @@ class EditView(FletView):
                                       )
         self.reset_button = ft.IconButton(icon=ft.icons.REFRESH_OUTLINED, tooltip="Reload Image")
         self.undo_button  = ft.IconButton(icon=ft.icons.UNDO_OUTLINED, tooltip="Undo")
-        self.edit_panel = ft.Column([ft.Row([self.edit_option, self.reset_button, self.undo_button])])
+        self.redo_button  = ft.IconButton(icon=ft.icons.REDO_OUTLINED, tooltip="Redo")
+        self.edit_panel = ft.Column([ft.Row([self.edit_option, self.reset_button, self.undo_button, self.redo_button])])
         
 
         self.image_container =ft.Container(self.image_container, 
