@@ -54,7 +54,7 @@ class App(FletApp):
         self.edit_view.flet_image.src_base64 = self.initial_view.image.get_base64()
         self.edit_view.flet_image.update()
         self.page.update()
-        self.initial_view.image.save_state()
+        # self.initial_view.image.save_state() # this causes memory leak
 
     def _on_select_edit_option(self, e):
         selected = e.control.value
