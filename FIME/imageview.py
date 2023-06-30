@@ -40,9 +40,9 @@ class ImageContext:
         
         self.image_array : np.ndarray = None
        
-        self.__loaded:bool = False
-        self.__image_array_state : np.ndarray = None
-        self.__image_history : list = []
+        self.__loaded:bool = False # flag: if the image is loaded as array
+        self.__image_array_state : np.ndarray = None # image array state before a change
+        self.__image_history : list = [] # arrays of images to preserve history
         self.__track_pointer = -1
         self.__FLAG_UNDO:bool = False
     
