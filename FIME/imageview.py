@@ -85,12 +85,14 @@ class ImageContext:
         self.image_array = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     
     def discard(self):
+        '''This method discard the immediate change'''
         if not self.__loaded:
             self._from_path()
         
         self.image_array = self.__image_array_state.copy()
 
     def reload(self):
+        ''' This method reload the image from source'''
         self.__loaded = False
         self.__image_array_state = None
         self.image_array = None
