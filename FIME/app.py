@@ -31,6 +31,11 @@ class App(FletApp):
         self.edit_view.reset_button.on_click = self._image_reload
         self.edit_view.undo_button.on_click = self._image_undo
         self.edit_view.redo_button.on_click = self._image_redo
+        self.edit_view.image_container.on_hover = self._on_hover_image_container
+
+    def _on_hover_image_container(self, e):
+        print(e.data)
+        # print(e.local_x, e.local_y)
 
     def _image_redo(self, e):
         self.initial_view.image.redo()
