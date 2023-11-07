@@ -1,4 +1,4 @@
-from fletSDP.app import FletApp
+from fletSDP.app import FletSDPApp
 import flet as ft
 
 from views.initial_view import InitialView
@@ -6,7 +6,7 @@ from views.edit_view import EditView, EditOption
 
 import imageview
 
-class App(FletApp):
+class App(FletSDPApp):
     def __init__(self, title=None) -> None:
         super().__init__(title)
     
