@@ -13,8 +13,8 @@ class EditOption:
     BW = "Black and White"
 
 class EditView(FletView):
-    def __init__(self, page: ft.Page) -> None:
-        super().__init__(page)
+    def __init__(self, page: ft.Page, updater) -> None:
+        super().__init__(page, updater)
 
     
     def controls(self):

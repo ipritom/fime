@@ -11,27 +11,28 @@ class App(FletSDPApp):
         super().__init__(title)
     
     def views(self, page:ft.Page):
-        self.initial_view = InitialView(self.page)
-        self.edit_view = EditView(self.page)
+        self.initial_view = InitialView(self.page, updater=self.initial_view_updater)
+        self.edit_view = EditView(self.page, updater=self.edit_view_updater)
 
-    def app_presentaion(self):
-
-        #########################
-        self.initial_view.render()
-        # namespace for save and pick file dialog
+    def initial_view_updater(self):
         pick_files_dialog = self.initial_view.pick_files_dialog
-        save_files_dialog = self.edit_view.save_files_dialog
-        # add interaction logic function for initial page
-        pick_files_dialog.on_result = self._pick_files_result
         self.initial_view.image_file_picker_btn.on_click = lambda _: pick_files_dialog.pick_files(allow_multiple=False)
-        # add interaction logic function for edit page
-        save_files_dialog.on_result = self._save_image
+        pick_files_dialog.on_result = self._pick_files_result
+
+    def edit_view_updater(self):
+        save_files_dialog = self.edit_view.save_files_dialog
         self.edit_view.edit_option.on_change = self._on_select_edit_option
         self.edit_view.save_btn.on_click = lambda _: save_files_dialog.get_directory_path(dialog_title="Save Location")
         self.edit_view.reset_button.on_click = self._image_reload
         self.edit_view.undo_button.on_click = self._image_undo
         self.edit_view.redo_button.on_click = self._image_redo
         self.edit_view.image_container.on_hover = self._on_hover_image_container
+         # add interaction logic function for edit page
+        save_files_dialog.on_result = self._save_image
+
+    def app_presentaion(self):
+        self.initial_view.render()
+       
 
     def _on_hover_image_container(self, e):
         print(e.data)
@@ -148,7 +149,7 @@ class App(FletSDPApp):
     def _pick_files_result(self, e):
         self.initial_view.image = imageview.ImageContext(e.files[0].path, preload=True,height=500, width=450)
         self.edit_view.flet_image = ft.Image(src_base64=self.initial_view.image.get_base64())
-        self.edit_view.render()
+        self.edit_view.render(clean_controls=False)
 
     def _save_image(self, e:ft.FilePickerResultEvent):
         imageview.image_save(self.initial_view.image,
