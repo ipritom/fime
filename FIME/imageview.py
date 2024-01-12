@@ -191,6 +191,7 @@ class ImageContext:
 
 def image_median_blur(image:ImageContext, kernal_size):
    image.image_array = cv2.medianBlur(image(), kernal_size)
+   cv_hint = f"cv2.medianBlur(image, {kernal_size})"
    return image
 
 def image_gray(image:ImageContext):
@@ -205,6 +206,7 @@ def image_gray(image:ImageContext):
 
 def image_filter(image:ImageContext, kernal=VERTICAL_KERNAL):
     image.image_array = cv2.filter2D(image(), -1, kernal)
+    cv_hint = f"cv2.filter2D(image, -1, {kernal})"
     return image
 
 def draw_dot(image:ImageContext, x, y, point_size=5):
@@ -215,6 +217,7 @@ def draw_dot(image:ImageContext, x, y, point_size=5):
     
 def image_conrast(image:ImageContext, alpha, beta):
     image.image_array = cv2.convertScaleAbs(image(),None, alpha, beta)
+    cv_hint = f"cv2.convertScaleAbs(image(), None, {alpha}, {beta})"
     return image
 
 
