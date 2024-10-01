@@ -193,6 +193,10 @@ def image_median_blur(image:ImageContext, kernal_size):
    image.image_array = cv2.medianBlur(image(), kernal_size)
    return image
 
+def image_gaussian_blur(image:ImageContext, kernal_size):
+   image.image_array = cv2.GaussianBlur(image(), (kernal_size,kernal_size),0)
+   return image
+ 
 def image_gray(image:ImageContext):
     if type(image.image_array) == type(None):
         image()

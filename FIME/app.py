@@ -14,9 +14,9 @@ class App(fletFlowApp):
         self.register_view("/edit", EditView)
     
     def app_presentaion(self):
-        # self.page.go("/")
-        self.page.go("/edit")
+        self.page.go("/")
+        # self.page.go("/edit")
 
 
-app = App(title="EDIMAGE")
+app = App(title="FIME")
 app.run()
