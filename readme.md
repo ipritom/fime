@@ -1,13 +1,9 @@
 # FIME - Flet Image Editor
-This is a very naive image manipulation software program. 
+This is a very naive image manipulation software program. This can be used as a templated for developing an image editing tool based on flet.
 # How to use 
 Clone the repository.
 ```
 git clone https://github.com/ipritom/fime.git
-```
-In your python environment install [fletSDP](https://github.com/ipritom/fletSDP)
-```
-pip install git+https://github.com/ipritom/fletSDP
 ```
 
 Install other dependencies:
