@@ -1,27 +1,29 @@
+from fletFlow import fletFlowView
 import flet as ft
-from fletSDP.views import FletView
-
-import imageview
+from utils import imageview
 
 
-class InitialView(FletView):
-    def __init__(self, page: ft.Page, updater) -> None:
-        super().__init__(page, updater)
-    
+class IndexView(fletFlowView):
+    def __init__(self, page: ft.Page) -> None:
+        super().__init__(page)
+
     def controls(self):
-        self.image : imageview.ImageContext = None
-        self.pick_files_dialog = ft.FilePicker()
+        self.pick_files_dialog = ft.FilePicker(on_result=self.pick_file_result)
         self.image_file_picker_btn =ft.ElevatedButton(
                                         "Open Image",
                                         icon=ft.icons.UPLOAD_FILE,
+                                        on_click=lambda _: self.pick_files_dialog.pick_files(allow_multiple=False)
                                         )
-        
+    
+    def pick_file_result(self, e:ft.FilePickerResultEvent):
+        path = e.files[0].path
+        self.page.session.set("img_path", path)
+        self.page.go("/edit")
+
 
     def layout(self):
-        # self.page.clean()
         self.page.overlay.append(self.pick_files_dialog)
-        self.page.add(
-            ft.Row(
+        lout = ft.Row(
                 [
                     ft.Container(
                         content=self.image_file_picker_btn,
@@ -32,6 +34,4 @@ class InitialView(FletView):
                 alignment=ft.MainAxisAlignment.CENTER,
                 expand=True
             )
-        )
-    
-    
+        return lout
