@@ -1,4 +1,4 @@
 flet==0.24.1
-fletFlow @ git+https://github.com/ipritom/fletFlow@a86b4acf07db189f111afc8914b95fa09dd6739b
+fletFlow==0.1.5
 numpy==2.1.1
-opencv_contrib_python==4.7.0.72
+opencv_python==4.10.0.84
