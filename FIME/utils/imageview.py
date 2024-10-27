@@ -229,12 +229,26 @@ def image_save(image:ImageContext, name:str=None, path=None):
     actual_path = os.path.join(path, f'{name}.jpg')
     cv2.imwrite(actual_path, image())
 
+
+def image_invert(image:ImageContext):
+    image.image_array = cv2.bitwise_not(image())
+    return image
+
 if __name__ == "__main__":
-    image = ImageContext("cosmetics.jpg")
+    path = r"C:\Users\Pritom\Desktop\dog.jpg"
+    image = ImageContext(path=path)
     print(image.shape)
     image = image_gray(image)
+    image = image_invert(image)
     print(image.shape)
+    cv2.imshow("show", image())
 
+    # waits for user to press any key
+# (this is necessary to avoid Python kernel form crashing)
+    cv2.waitKey(0)
+
+# closing all open windows
+    cv2.destroyAllWindows()
     # img = base64.b64encode(image()).decode('utf-8')
 
     # print(image.get_base64())

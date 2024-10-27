@@ -13,6 +13,7 @@ class EditOption:
     FILTER = "Filter"
     CONTRAST = "Contrast"
     BW = "Black and White"
+    INVERT = "Invert"
 
 
 class EditView(fletFlowView):
@@ -24,7 +25,7 @@ class EditView(fletFlowView):
         path = self.page.session.get("img_path")
         # print(path)
         # path = r"C:\Users\Pritom\Desktop\Bard_Generated_Image.jpg"
-        # path = r"D:\Experiments\git_projects\fime\FIME\sunflower.jpg"
+        path = r"C:\Users\Pritom\Desktop\dog.jpg"
         self.image : imageview.ImageContext = imageview.ImageContext(path=path, preload=True)
         # self.initial_view.image = imageview.ImageContext(path=path, preload=True,height=500, width=450)
         self.flet_image = ft.Image(
@@ -38,7 +39,9 @@ class EditView(fletFlowView):
                                        ft.dropdown.Option(EditOption.GBLUR), 
                                        ft.dropdown.Option(EditOption.FILTER), 
                                        ft.dropdown.Option(EditOption.CONTRAST),
-                                       ft.dropdown.Option(EditOption.BW)],
+                                       ft.dropdown.Option(EditOption.BW),
+                                       ft.dropdown.Option(EditOption.INVERT)
+                                       ],
                                     on_change=self.on_select_edit_option,
                                       )
         self.reset_button = ft.IconButton(icon=ft.icons.REFRESH_OUTLINED, tooltip="Reload Image", on_click=self._reload_image)
@@ -63,8 +66,9 @@ class EditView(fletFlowView):
         elif selected == EditOption.GBLUR:
             self.gblur_slider = ft.Slider(min=0, max=10, divisions=10, label="{value}", on_change=self._gaussian_blur_slider_change)
             self.edit_panel.controls.append(self.gblur_slider)
+
         elif selected == EditOption.CONTRAST:
-            self.alpha_slider = ft.Slider(min=0, max=5, divisions=5, label="alpha {value}")
+            self.alpha_slider = ft.Slider(min=1, max=11, divisions=11, label="alpha {value}")
             self.beta_slider = ft.Slider(min=0, max=5, divisions=5, label="beta {value}")
             self.btn_contrast_apply = ft.ElevatedButton(text="Apply", on_click=self._on_contrast_apply)
             
@@ -80,7 +84,31 @@ class EditView(fletFlowView):
             self.btn_bw = ft.TextButton("Black & White", on_click=self._on_btn_bw_click)
             self.edit_panel.controls.append(self.btn_bw)
 
+        elif selected == EditOption.FILTER:
+            self.horizontal_kernal_btn = ft.TextButton("Horizontal Kernal", data="horizontal", on_click=self._on_filter_btn_click) 
+            self.vertical_kernal_btn = ft.TextButton("Vertical Kernal", data="vertical", on_click=self._on_filter_btn_click)
+            self.sobel_kernal_btn = ft.TextButton("Sobel Kernal", data="sobel", on_click=self._on_filter_btn_click)
+            self.edit_panel.controls.append(ft.Column([self.horizontal_kernal_btn,
+                                                       self.vertical_kernal_btn,
+                                                       self.sobel_kernal_btn]))
+        
+        elif selected == EditOption.INVERT:
+            self.image = imageview.image_invert(self.image)
+            self.flet_image.src_base64 = self.image.get_base64()
 
+        self.page.update()
+
+    def _on_filter_btn_click(self, e):
+        filter = e.control.data
+        print(filter)
+        if filter=="horizontal":
+            self.image = imageview.image_filter(self.image, kernal=imageview.HORIZONTAL_KERNAL)
+        elif filter=="vertical":
+            self.image = imageview.image_filter(self.image, kernal=imageview.VERTICAL_KERNAL)
+        elif filter=="sobel":
+            self.image = imageview.image_filter(self.image, kernal=imageview.SOBEL_KERNAL)
+
+        self.flet_image.src_base64 = self.image.get_base64()
         self.page.update()
 
     def _on_btn_bw_click(self, e):
